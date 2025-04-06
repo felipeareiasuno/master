@@ -156,7 +156,8 @@ with abas[2]:
         st.markdown(f"**Pontos usados:** {pontos_usados}")
         st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
         if saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:    else:
+        st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
+    else:
         st.markdown("_Nenhuma recompensa selecionada ainda._")
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
@@ -195,8 +196,7 @@ with abas[2]:
             if st.checkbox(f"{b['name']} ({b['points']} pts)", key=b['name']):
                 recompensas_extra.append(b['name'])
                 pontos_usados += b['points']
-    ** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
-
+    
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
 
