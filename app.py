@@ -130,8 +130,11 @@ with abas[2]:
 
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
-    recompensas_totais = [recompensa_assinatura] if recompensa_assinatura else []
+    recompensas_totais = []
+    if recompensa_assinatura:
+        recompensas_totais.append(recompensa_assinatura)
     recompensas_totais += recompensas_extra
+
     if recompensas_totais:
         st.markdown(f"**Você escolheu:** {', '.join(recompensas_totais)}")
         st.markdown(f"**Pontos usados:** {pontos_usados}")
