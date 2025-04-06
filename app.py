@@ -46,9 +46,29 @@ planos_ordenados = list(valores_reais.keys())
 st.set_page_config(page_title="Simulador Indicação Suno", layout="centered")
 st.title("📊 Simulador de Indicação Premiada - Suno")
 
-aba = st.sidebar.radio("Escolha o simulador:", ["1. Quantos pontos vou ganhar", "2. O que posso trocar com meus pontos"])
+abas = st.tabs([
+    "📘 Sobre o Programa",
+    "🎯 Quantos pontos vou ganhar",
+    "🎁 O que posso trocar com meus pontos"
+])
 
-if aba == "1. Quantos pontos vou ganhar":
+with abas[0]:
+    st.header("📘 Sobre o Programa de Indicação")
+    st.markdown("""
+    Participe do programa de indicação da Suno e acumule pontos para trocar por assinaturas, cursos e brindes!
+
+    ### Como funciona:
+    - A cada amigo indicado que assinar um plano Suno, você ganha pontos.
+    - Os pontos são proporcionais ao valor da assinatura adquirida pelo indicado.
+    - Com os pontos acumulados, você pode trocá-los por recompensas no catálogo.
+
+    ### Regras básicas:
+    - Você ganha **10% do valor pago** em pontos (1 ponto = R$ 5,94).
+    - Os pontos podem ser utilizados parcialmente, como **desconto** nas assinaturas e cursos.
+    - Algumas trocas exigem número mínimo de pontos.
+    """)
+
+with abas[1]:
     st.header("🎯 Simulador de pontos por indicação")
 
     total_pontos = 0
@@ -67,7 +87,7 @@ if aba == "1. Quantos pontos vou ganhar":
     st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} pts**")
     st.caption("Cada ponto pode ser trocado por recompensas no catálogo.")
 
-else:
+with abas[2]:
     st.header("🎁 Simulador de trocas por pontos")
     col1, col2 = st.columns([1, 1])
     with col1:
