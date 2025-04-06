@@ -39,7 +39,7 @@ valores_reais = {
     "Ações": 251.16,
     "Renda Variável": 419.16,
     "Premium": 461.16,
-    "Inter": 1236.20,
+    "Internacional": 1236.20,
     "Small Caps": 1236.20,
     "Suno Black": 2774.40,
 }
@@ -72,6 +72,7 @@ brindes = [
     {"name": "Agasalho", "points": 39},
 ]
 
+valores_reais = dict(("Internacional" if k == "Inter" else k, v) for k, v in valores_reais.items())
 planos_ordenados = list(valores_reais.keys())
 
 st.title("📊 Simulador de Indicação Premiada - Suno")
@@ -129,7 +130,7 @@ with abas[1]:
         with col2:
             qtd = st.number_input("", min_value=0, step=1, key=plano, label_visibility="collapsed")
         valor_pago = valores_reais[plano]
-        pontos = (valor_pago * 0.10) / 5.94 * qtd
+        pontos = round((valor_pago * 0.10) / 5.94) * qtd
         total_pontos += pontos
     st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} pts**")
 
@@ -204,7 +205,7 @@ with abas[4]:
     st.markdown("---")
     st.markdown("### 💡 Exemplos de combinações para conquistar sua recompensa:")
     for a in assinaturas:
-        pontos_gerados = int((valores_reais[a["name"]] * 0.10) / 5.94)
+        pontos_gerados = round((valores_reais[a["name"]] * 0.10) / 5.94)
         if pontos_gerados > 0:
             qtd = (pontos_necessarios + pontos_gerados - 1) // pontos_gerados
             st.markdown(f"- {qtd} indicações do plano **{a['name']}** ({pontos_gerados} pts cada)")
