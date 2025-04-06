@@ -146,7 +146,7 @@ with abas[2]:
             faltam = b["points"] - pontos
             st.markdown(f"- {b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
 
-with abas[3]:
+with abas[4]:
     st.header("🎟️ Gere seu cupom exclusivo")
     email = st.text_input("Digite seu e-mail para gerar o cupom:")
     if email:
@@ -156,7 +156,7 @@ with abas[3]:
         coupon_code = hash_value.hexdigest()[:8].upper()
         st.success(f"Seu cupom exclusivo: **{coupon_code}**")
 
-with abas[4]:
+with abas[3]:
     st.header("🧮 Quero conquistar uma recompensa")
 
     tipo_recompensa = st.selectbox("Qual tipo de recompensa você quer?", ["Assinatura", "Curso", "Brinde"])
