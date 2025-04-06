@@ -204,7 +204,7 @@ with abas[2]:
     st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
     if saldo_a_pagar > 0:
         st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
-    st.markdown("---") = saldo_a_pagar
+    st.markdown("---")
 
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
