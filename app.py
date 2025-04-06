@@ -137,15 +137,19 @@ with abas[2]:
 
     st.subheader("🔄 Trocas disponíveis")
 
-    st.markdown("**Assinaturas** (com desconto proporcional):")
+    st.markdown("**Assinaturas** (descontos em múltiplos de 10%):")
     for item in assinaturas:
         if planos_ordenados.index(item["name"]) >= nivel_atual:
-            desconto = min(100, int((pontos / item["points"]) * 100))
-            if desconto > 0:
-                valor_final = valores_reais[item['name']] * (1 - desconto / 100)
-                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:,.2f}".replace('.', ','))
+            max_desconto = min(100, int((pontos / item["points"]) * 100))
+            desconto_aplicado = (max_desconto // 10) * 10
+            if desconto_aplicado >= 10:
+                valor_final = valores_reais[item['name']] * (1 - desconto_aplicado / 100)
+                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ','))
 
     st.markdown("**Cursos**:")
+    }
+  ]
+}")
     for c in cursos:
         if pontos >= c["points"]:
             st.markdown(f"- {c['name']} ({c['points']} pts)")
@@ -163,16 +167,10 @@ with abas[2]:
 
 with abas[3]:
     st.header("🎟️ Gere seu cupom exclusivo")
-    import re
     email = st.text_input("Digite seu e-mail para gerar o cupom:")
-    
     if email:
-        if re.match(r"[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+", email):
-            import hashlib
-            hash_value = hashlib.new('whirlpool')
-            hash_value.update(email.encode())
-            coupon_code = hash_value.hexdigest()[:8].upper()
-            st.success(f"Seu cupom exclusivo: **{coupon_code}**")
-        else:
-            st.error("Por favor, insira um e-mail válido.")
-
+        import hashlib
+        hash_value = hashlib.new('whirlpool')
+        hash_value.update(email.encode())
+        coupon_code = hash_value.hexdigest()[:8].upper()
+        st.success(f"Seu cupom exclusivo: **{coupon_code}**")
