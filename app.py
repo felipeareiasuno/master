@@ -129,15 +129,14 @@ with abas[2]:
     if "saldo_a_pagar" not in st.session_state:
         st.session_state.saldo_a_pagar = 0.0
 
-    if st.session_state.recompensas_totais:
-        st.markdown(f"**Você escolheu:** {', '.join(st.session_state.recompensas_totais)}")
-        st.markdown(f"**Pontos usados:** {st.session_state.pontos_usados}")
-        st.markdown(f"**Pontos restantes:** {pontos - st.session_state.pontos_usados}")
-        if st.session_state.saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:** R$ {st.session_state.saldo_a_pagar:,.2f}".replace('.', ','))
+    if recompensas:
+        st.markdown(f"**Você escolheu:** {', '.join(recompensas)}")
+        st.markdown(f"**Pontos usados:** {pontos_usados}")
+        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
+        if saldo_a_pagar > 0:
+            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
     else:
         st.markdown("_Nenhuma recompensa selecionada ainda._")
-
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
 
@@ -165,12 +164,13 @@ with abas[2]:
     opcoes_radio = ["Nenhuma"] + opcoes_assinatura
     escolha = st.radio("Escolha uma assinatura:", opcoes_radio, index=0, key="assinatura_radio")
     nome_assinatura = None
+    nome_assinatura = None
     if escolha != "Nenhuma" and escolha in mapa_assinatura:
         nome_assinatura, pontos_assinatura, valor_assinatura = mapa_assinatura[escolha]
         if pontos_assinatura <= pontos:
-            recompensas.append(nome_assinatura)
-            pontos_usados += pontos_assinatura
-            saldo_a_pagar += valor_assinatura
+            recompensas = [nome_assinatura]
+            pontos_usados = pontos_assinatura
+            saldo_a_pagar = valor_assinatura
 
     # Cursos
     st.markdown("### Cursos")
