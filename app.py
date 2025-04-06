@@ -75,7 +75,7 @@ brindes = [
 valores_reais = dict(("Internacional" if k == "Inter" else k, v) for k, v in valores_reais.items())
 planos_ordenados = list(valores_reais.keys())
 
-st.title("📊 Simulador de Indicação Premiada - Suno")
+st.title("📊 Indicação Premiada Suno")
 
 abas = st.tabs([
     "📘 Sobre",
