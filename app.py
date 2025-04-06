@@ -147,9 +147,6 @@ with abas[2]:
                 st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ','))
 
     st.markdown("**Cursos**:")
-    }
-  ]
-}")
     for c in cursos:
         if pontos >= c["points"]:
             st.markdown(f"- {c['name']} ({c['points']} pts)")
