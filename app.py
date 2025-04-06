@@ -84,7 +84,8 @@ else:
         if planos_ordenados.index(item["name"]) >= nivel_atual:
             desconto = min(100, int((pontos / item["points"]) * 100))
             if desconto > 0:
-                st.write(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto")
+                valor_final = valores_reais[item['name']] * (1 - desconto / 100)
+                st.write(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:.2f}")
 
     st.markdown("**Cursos**:")
     cursos_disp = [c for c in cursos if pontos >= c["points"]]
