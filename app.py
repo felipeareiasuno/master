@@ -69,31 +69,35 @@ if aba == "1. Quantos pontos vou ganhar":
 
 else:
     st.header("🎁 Simulador de trocas por pontos")
-    pontos = st.number_input("Quantos pontos você tem?", min_value=0.0, step=0.5)
-    plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados)
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        pontos = st.number_input("Quantos pontos você tem?", min_value=0, step=1)
+    with col2:
+        plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados)
+
     nivel_atual = planos_ordenados.index(plano_atual)
 
     st.subheader("🔄 Trocas disponíveis")
 
-    st.markdown("**Assinaturas** (com desconto proporcional):")
+    st.markdown("**Assinaturas** (com desconto proporcional):", help=None)
     for item in assinaturas:
         if planos_ordenados.index(item["name"]) >= nivel_atual:
             desconto = min(100, int((pontos / item["points"]) * 100))
             if desconto > 0:
-                st.markdown(f"- {item['name']} ({item['points']} pts) → **{desconto}% de desconto**")
+                st.write(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto")
 
     st.markdown("**Cursos**:")
     cursos_disp = [c for c in cursos if pontos >= c["points"]]
     if cursos_disp:
         for c in cursos_disp:
-            st.markdown(f"- {c['name']} ({c['points']} pts)")
+            st.write(f"- {c['name']} ({c['points']} pts)")
     else:
-        st.markdown("_Nenhum curso disponível._")
+        st.write("_Nenhum curso disponível._")
 
     st.markdown("**Brindes**:")
     brindes_disp = [b for b in brindes if pontos >= b["points"]]
     if brindes_disp:
         for b in brindes_disp:
-            st.markdown(f"- {b['name']} ({b['points']} pts)")
+            st.write(f"- {b['name']} ({b['points']} pts)")
     else:
-        st.markdown("_Nenhum brinde disponível._")
+        st.write("_Nenhum brinde disponível._")
