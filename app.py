@@ -158,12 +158,19 @@ with abas[2]:
                     valor_total = valores_reais[item["name"]]
                     valor_final = valor_total * (1 - desconto_aplicado / 100)
                     pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
-                    label = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
-                    opcoes_assinatura.append(label)
+                    descricao = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
+                    opcoes_assinatura.append(descricao)
                     mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
 
     opcoes_radio = ["Nenhuma"] + opcoes_assinatura
     escolha = st.radio("Escolha uma assinatura:", opcoes_radio, index=0, key="assinatura_radio")
+    nome_assinatura = None
+    if escolha != "Nenhuma" and escolha in mapa_assinatura:
+        nome_assinatura, pontos_assinatura, valor_assinatura = mapa_assinatura[escolha]
+        if pontos_assinatura <= pontos:
+            recompensas.append(nome_assinatura)
+            pontos_usados += pontos_assinatura
+            saldo_a_pagar += valor_assinatura
     if escolha != "Nenhuma" and escolha in mapa_assinatura:
         nome_assinatura, pontos_assinatura, valor_assinatura = mapa_assinatura[escolha]
         if pontos_assinatura <= pontos:
