@@ -9,9 +9,15 @@ st.markdown("""
     .block-container {
         padding-top: 2rem;
     }
-    .stTabs [data-baseweb="tab-list"] {
+    header[data-testid="stHeader"] {
         position: sticky;
         top: 0;
+        background-color: white;
+        z-index: 100;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        position: sticky;
+        top: 3.5rem;
         background-color: white;
         z-index: 99;
         padding-top: 1rem;
