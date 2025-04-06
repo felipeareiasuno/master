@@ -79,8 +79,10 @@ st.title("📊 Simulador de Indicação Premiada - Suno")
 abas = st.tabs([
     "📘 Sobre o Programa",
     "🎯 Quantos pontos vou ganhar",
-    "🎁 O que posso trocar com meus pontos"
-, "🎟️ Gerar meu cupom"])
+    "🎁 O que posso trocar com meus pontos",
+    "🎟️ Gerar meu cupom",
+    "🧮 Quero conquistar uma recompensa"
+])
 
 with abas[0]:
     st.header("📘 Sobre o Programa de Indicação")
@@ -177,3 +179,32 @@ with abas[3]:
         hash_value.update(email.encode())
         coupon_code = hash_value.hexdigest()[:8].upper()
         st.success(f"Seu cupom exclusivo: **{coupon_code}**")
+
+with abas[4]:
+    st.header("🧮 Quero conquistar uma recompensa")
+
+    tipo_recompensa = st.selectbox("Qual tipo de recompensa você quer?", ["Assinatura", "Curso", "Brinde"])
+
+    if tipo_recompensa == "Assinatura":
+        plano_atual = st.selectbox("Qual assinatura você possui?", planos_ordenados)
+        opcoes = [a for a in assinaturas if planos_ordenados.index(a["name"]) >= planos_ordenados.index(plano_atual)]
+        desejada = st.selectbox("Qual assinatura você quer conquistar?", [a["name"] for a in opcoes])
+        pontos_necessarios = next(a["points"] for a in opcoes if a["name"] == desejada)
+
+    elif tipo_recompensa == "Curso":
+        desejado = st.selectbox("Qual curso você quer conquistar?", [c["name"] for c in cursos])
+        pontos_necessarios = next(c["points"] for c in cursos if c["name"] == desejado)
+
+    elif tipo_recompensa == "Brinde":
+        desejado = st.selectbox("Qual brinde você quer conquistar?", [b["name"] for b in brindes])
+        pontos_necessarios = next(b["points"] for b in brindes if b["name"] == desejado)
+
+    st.markdown(f"### 🧩 Pontos necessários: **{pontos_necessarios} pts**")
+
+    st.markdown("---")
+    st.markdown("### 💡 Exemplos de combinações para conquistar sua recompensa:")
+    for a in assinaturas:
+        pontos_gerados = int((valores_reais[a["name"]] * 0.10) / 5.94)
+        if pontos_gerados > 0:
+            qtd = (pontos_necessarios + pontos_gerados - 1) // pontos_gerados
+            st.markdown(f"- {qtd} indicações do plano **{a['name']}** ({pontos_gerados} pts cada)")
