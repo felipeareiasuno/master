@@ -110,8 +110,64 @@ with abas[1]:
     st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} {'ponto' if round(total_pontos) == 1 else 'pontos'}**")
 
 with abas[2]:
-    # (mantido como está — Ganhe)
-    ...
+    st.header("🎁 Simulador de trocas por pontos")
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        pontos = st.number_input("Quantos pontos você tem?", min_value=0, step=1)
+    with col2:
+        plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados)
+
+    nivel_atual = planos_ordenados.index(plano_atual)
+
+    st.markdown("---")
+    st.subheader("🔄 Escolha o que deseja trocar")
+
+    recompensas_selecionadas = []
+    pontos_usados = 0
+    saldo_a_pagar = 0.0
+
+    st.markdown("### Assinaturas")
+    for item in assinaturas:
+        if planos_ordenados.index(item["name"]) >= nivel_atual:
+            max_desconto = min(100, int((pontos / item["points"]) * 100))
+            desconto_aplicado = (max_desconto // 10) * 10
+            if desconto_aplicado >= 10:
+                valor_total = valores_reais[item["name"]]
+                valor_final = valor_total * (1 - desconto_aplicado / 100)
+                pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
+                if st.checkbox(f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')):
+                    recompensas_selecionadas.append(item['name'])
+                    pontos_usados += pontos_necessarios
+                    saldo_a_pagar += valor_final
+
+    st.markdown("### Cursos")
+    for c in cursos:
+        if pontos >= c["points"]:
+            if st.checkbox(f"{c['name']} ({c['points']} pts)"):
+                recompensas_selecionadas.append(c['name'])
+                pontos_usados += c['points']
+        else:
+            faltam = c["points"] - pontos
+            st.markdown(f"{c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+
+    st.markdown("### Brindes")
+    for b in brindes:
+        if pontos >= b["points"]:
+            if st.checkbox(f"{b['name']} ({b['points']} pts)"):
+                recompensas_selecionadas.append(b['name'])
+                pontos_usados += b['points']
+        else:
+            faltam = b["points"] - pontos
+            st.markdown(f"{b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+
+    if recompensas_selecionadas:
+        st.markdown("---")
+        st.subheader("🎉 Resumo da troca")
+        st.markdown(f"**Você escolheu:** {', '.join(recompensas_selecionadas)}")
+        st.markdown(f"**Pontos usados:** {pontos_usados}")
+        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
+        if saldo_a_pagar > 0:
+            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
 
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
