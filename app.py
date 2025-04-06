@@ -119,25 +119,33 @@ with abas[2]:
 
     nivel_atual = planos_ordenados.index(plano_atual)
 
+    recompensa_assinatura = None
+    recompensas_extra = []
+    pontos_usados = 0
+    saldo_a_pagar = 0.0
+
     recompensas_selecionadas = []
     pontos_usados = 0
     saldo_a_pagar = 0.0
 
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
-    if recompensas_selecionadas:
-        st.markdown(f"**Você escolheu:** {', '.join(recompensas_selecionadas)}")
+    recompensas_totais = [recompensa_assinatura] if recompensa_assinatura else []
+    recompensas_totais += recompensas_extra
+    if recompensas_totais:
+        st.markdown(f"**Você escolheu:** {', '.join(recompensas_totais)}")
         st.markdown(f"**Pontos usados:** {pontos_usados}")
         st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
         if saldo_a_pagar > 0:
             st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
     else:
         st.markdown("_Nenhuma recompensa selecionada ainda._")
-
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
 
     st.markdown("### Assinaturas")
+    opcoes_assinatura = ["Nenhuma"]
+    mapa_assinatura = {}
     for item in assinaturas:
         if planos_ordenados.index(item["name"]) >= nivel_atual:
             max_desconto = min(100, int((pontos / item["points"]) * 100))
@@ -146,15 +154,15 @@ with abas[2]:
                 valor_total = valores_reais[item["name"]]
                 valor_final = valor_total * (1 - desconto_aplicado / 100)
                 pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
-                if st.checkbox(f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')):
-                    recompensas_selecionadas.append(item['name'])
-                    pontos_usados += pontos_necessarios
-                    saldo_a_pagar += valor_final
-
-    st.markdown("### Cursos")
+                label = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
+                opcoes_assinatura.append(label)
+                mapa_assinatura[label] = (item["name"], pontos_necessarios, st.markdown("### Cursos")
     for c in cursos:
-        if pontos >= c["points"]:
-            if st.checkbox(f"{c['name']} ({c['points']} pts)"):
+        if pontos - pontos_usados >= c["points"]:
+            if st.checkbox(f"{c['name']} ({c['points']} pts)", key=c['name']):
+                recompensas_extra.append(c['name'])
+                pontos_usados += c['points']
+    st.markdown("### Brindes")box(f"{c['name']} ({c['points']} pts)"):
                 recompensas_selecionadas.append(c['name'])
                 pontos_usados += c['points']
         else:
@@ -163,14 +171,11 @@ with abas[2]:
 
     st.markdown("### Brindes")
     for b in brindes:
-        if pontos >= b["points"]:
-            if st.checkbox(f"{b['name']} ({b['points']} pts)"):
-                recompensas_selecionadas.append(b['name'])
+        if pontos - pontos_usados >= b["points"]:
+            if st.checkbox(f"{b['name']} ({b['points']} pts)", key=b['name']):
+                recompensas_extra.append(b['name'])
                 pontos_usados += b['points']
-        else:
-            faltam = b["points"] - pontos
-            st.markdown(f"{b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
-        st.markdown("---")
+    st.markdown("---")
         st.subheader("🎉 Resumo da troca")
         st.markdown(f"**Você escolheu:** {', '.join(recompensas_selecionadas)}")
         st.markdown(f"**Pontos usados:** {pontos_usados}")
