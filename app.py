@@ -145,7 +145,7 @@ with abas[2]:
                     opcoes_assinatura.append(label)
                     mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
 
-    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma"
+    # removido para evitar duplicação
 
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
@@ -181,6 +181,26 @@ with abas[2]:
         st.markdown("_Nenhuma recompensa selecionada ainda._")
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
+
+    st.markdown("### Cursos")
+    for c in cursos:
+        if pontos - pontos_usados >= c["points"]:
+            if st.checkbox(f"{c['name']} ({c['points']} pts)", key=c['name']):
+                recompensas_extra.append(c['name'])
+                pontos_usados += c['points']
+        else:
+            faltam = c["points"] - (pontos - pontos_usados)
+            st.markdown(f"{c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+
+    st.markdown("### Brindes")
+    for b in brindes:
+        if pontos - pontos_usados >= b["points"]:
+            if st.checkbox(f"{b['name']} ({b['points']} pts)", key=b['name']):
+                recompensas_extra.append(b['name'])
+                pontos_usados += b['points']
+        else:
+            faltam = b["points"] - (pontos - pontos_usados)
+            st.markdown(f"{b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
 
     st.markdown("### Assinaturas")
     opcoes_assinatura = []
