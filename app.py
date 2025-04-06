@@ -24,13 +24,13 @@ assinaturas = [{"name": nome, "points": pts} for nome, pts in {
 }.items()]
 
 cursos = [
-    {"name": "Valuation e Precificação", "points": 47, "valor": 470.00},
-    {"name": "Viva de Dividendos", "points": 14, "valor": 140.00},
-    {"name": "FIIs", "points": 18, "valor": 180.00},
-    {"name": "Contabilidade", "points": 16, "valor": 160.00},
-    {"name": "Matemática Financeira", "points": 16, "valor": 160.00},
-    {"name": "Economia", "points": 23, "valor": 230.00},
-    {"name": "Renda Fixa", "points": 16, "valor": 160.00},
+    {"name": "Valuation e Precificação", "points": 47, "valor": 837.90},
+    {"name": "Viva de Dividendos", "points": 14, "valor": 242.90},
+    {"name": "Investindo em Fundos Imobiliários", "points": 18, "valor": 312.90},
+    {"name": "Contabilidade para Investidores", "points": 16, "valor": 277.90},
+    {"name": "Matemática Financeira", "points": 16, "valor": 277.90},
+    {"name": "Economia para Investidores", "points": 23, "valor": 417.90},
+    {"name": "Investindo em Renda Fixa", "points": 16, "valor": 277.90},
 ]
 
 brindes = [
@@ -85,14 +85,14 @@ else:
             desconto = min(100, int((pontos / item["points"]) * 100))
             if desconto > 0:
                 valor_final = valores_reais[item['name']] * (1 - desconto / 100)
-                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:.2f}", unsafe_allow_html=True)
+                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:,.2f}".replace('.', ','), unsafe_allow_html=True)
 
     st.markdown("**Cursos**:")
     cursos_disp = [c for c in cursos if pontos >= c["points"]]
     if cursos_disp:
         for c in cursos_disp:
             saldo = c["valor"] * (1 - (pontos / c["points"])) if pontos < c["points"] else 0
-            st.markdown(f"- {c['name']} ({c['points']} pts) → Saldo a pagar: R$ {saldo:.2f}", unsafe_allow_html=True)
+            st.markdown(f"- {c['name']} ({c['points']} pts) → Saldo a pagar: R$ {saldo:,.2f}".replace('.', ','), unsafe_allow_html=True)
     else:
         st.markdown("_Nenhum curso disponível._")
 
