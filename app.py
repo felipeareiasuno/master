@@ -171,12 +171,6 @@ with abas[2]:
             recompensas.append(nome_assinatura)
             pontos_usados += pontos_assinatura
             saldo_a_pagar += valor_assinatura
-    if escolha != "Nenhuma" and escolha in mapa_assinatura:
-        nome_assinatura, pontos_assinatura, valor_assinatura = mapa_assinatura[escolha]
-        if pontos_assinatura <= pontos:
-            recompensas.append(nome_assinatura)
-            pontos_usados += pontos_assinatura
-            saldo_a_pagar += valor_assinatura
 
     # Cursos
     st.markdown("### Cursos")
