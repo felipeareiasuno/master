@@ -160,7 +160,7 @@ with abas[2]:
                     pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
                     descricao = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
                     opcoes_assinatura.append(descricao)
-                    mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
+                    mapa_assinatura[descricao] = (item["name"], pontos_necessarios, valor_final)
 
     opcoes_radio = ["Nenhuma"] + opcoes_assinatura
     escolha = st.radio("Escolha uma assinatura:", opcoes_radio, index=0, key="assinatura_radio")
