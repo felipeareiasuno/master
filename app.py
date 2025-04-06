@@ -131,24 +131,29 @@ with abas[2]:
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
     recompensas_totais = []
+
+    if escolha != "Nenhuma":
+        recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
+        if pontos_assinatura <= pontos:
+            recompensas_totais.append(recompensa_assinatura)
+
+    recompensas_totais += recompensas_extra
+
     pontos_usados = 0
     saldo_a_pagar = 0.0
 
     if escolha != "Nenhuma":
         recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
         if pontos_assinatura <= pontos:
-            recompensas_totais.append(recompensa_assinatura)
             pontos_usados += pontos_assinatura
             saldo_a_pagar += valor_final
 
     for c in cursos:
         if pontos - pontos_usados >= c["points"] and st.session_state.get(c['name']):
-            recompensas_totais.append(c['name'])
             pontos_usados += c['points']
 
     for b in brindes:
         if pontos - pontos_usados >= b["points"] and st.session_state.get(b['name']):
-            recompensas_totais.append(b['name'])
             pontos_usados += b['points']
 
     if recompensas_totais:
@@ -197,7 +202,6 @@ with abas[2]:
                 recompensas_extra.append(b['name'])
                 pontos_usados += b['points']
     
-
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
 
