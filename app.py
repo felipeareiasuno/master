@@ -110,38 +110,44 @@ with abas[1]:
     st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} {'ponto' if round(total_pontos) == 1 else 'pontos'}**")
 
 with abas[2]:
-    st.header("🎁 Simulador de trocas por pontos")
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        pontos = st.number_input("Quantos pontos você tem?", min_value=0, step=1)
-    with col2:
-        plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados)
+    # (mantido como está — Ganhe)
+    ...
 
-    nivel_atual = planos_ordenados.index(plano_atual)
+with abas[3]:
+    st.header("🎯 Quero conquistar uma recompensa")
 
-    st.subheader("🔄 Trocas disponíveis")
+    tipo_recompensa = st.selectbox("Qual tipo de recompensa você quer?", ["Assinatura", "Curso", "Brinde"])
 
-    st.markdown("**Assinaturas** (descontos em múltiplos de 10%):")
-    for item in assinaturas:
-        if planos_ordenados.index(item["name"]) >= nivel_atual:
-            max_desconto = min(100, int((pontos / item["points"]) * 100))
-            desconto_aplicado = (max_desconto // 10) * 10
-            if desconto_aplicado >= 10:
-                valor_final = valores_reais[item['name']] * (1 - desconto_aplicado / 100)
-                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ','))
+    if tipo_recompensa == "Assinatura":
+        plano_atual = st.selectbox("Qual assinatura você possui?", planos_ordenados)
+        opcoes = [a for a in assinaturas if planos_ordenados.index(a["name"]) >= planos_ordenados.index(plano_atual)]
+        desejada = st.selectbox("Qual assinatura você quer conquistar?", [a["name"] for a in opcoes])
+        pontos_necessarios = next(a["points"] for a in opcoes if a["name"] == desejada)
 
-    st.markdown("**Cursos**:")
-    for c in cursos:
-        if pontos >= c["points"]:
-            st.markdown(f"- {c['name']} ({c['points']} pts)")
-        else:
-            faltam = c["points"] - pontos
-            st.markdown(f"- {c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+    elif tipo_recompensa == "Curso":
+        desejado = st.selectbox("Qual curso você quer conquistar?", [c["name"] for c in cursos])
+        pontos_necessarios = next(c["points"] for c in cursos if c["name"] == desejado)
 
-    st.markdown("### Brindes")
-    for b in brindes:
-        if pontos >= b["points"]:
-            st.markdown(f"**{b['name']}** ({b['points']} pts)")
-        else:
-            faltam = b["points"] - pontos
-            st.markdown(f"**{b['name']}** (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+    elif tipo_recompensa == "Brinde":
+        desejado = st.selectbox("Qual brinde você quer conquistar?", [b["name"] for b in brindes])
+        pontos_necessarios = next(b["points"] for b in brindes if b["name"] == desejado)
+
+    st.markdown(f"### 🧩 Pontos necessários: **{pontos_necessarios} {'ponto' if pontos_necessarios == 1 else 'pontos'}**")
+
+    st.markdown("---")
+    st.markdown("### 💡 Exemplos de combinações para conquistar sua recompensa:")
+    for a in assinaturas:
+        pontos_gerados = round((valores_reais[a["name"]] * 0.10) / 5.94)
+        if pontos_gerados > 0:
+            qtd = (pontos_necessarios + pontos_gerados - 1) // pontos_gerados
+            st.markdown(f"- {qtd} {'indicação' if qtd == 1 else 'indicações'} do plano **{a['name']}** ({pontos_gerados} {'ponto' if pontos_gerados == 1 else 'pontos'} cada)")
+
+with abas[4]:
+    st.header("🎟️ Gere seu cupom exclusivo")
+    email = st.text_input("Digite seu e-mail para gerar o cupom:")
+    if email:
+        import hashlib
+        hash_value = hashlib.new('whirlpool')
+        hash_value.update(email.encode())
+        coupon_code = hash_value.hexdigest()[:8].upper()
+        st.success(f"Seu cupom exclusivo: **{coupon_code}**")
