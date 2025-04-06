@@ -128,6 +128,25 @@ with abas[2]:
     pontos_usados = 0
     saldo_a_pagar = 0.0
 
+    st.markdown("### Assinaturas")
+    opcoes_assinatura = []
+    mapa_assinatura = {}
+    if pontos > 0:
+        opcoes_assinatura.append("Nenhuma")
+        for item in assinaturas:
+            if planos_ordenados.index(item["name"]) >= nivel_atual:
+                max_desconto = min(100, int((pontos / item["points"]) * 100))
+                desconto_aplicado = (max_desconto // 10) * 10
+                if desconto_aplicado >= 10:
+                    valor_total = valores_reais[item["name"]]
+                    valor_final = valor_total * (1 - desconto_aplicado / 100)
+                    pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
+                    label = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
+                    opcoes_assinatura.append(label)
+                    mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
+
+    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma"
+
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
     escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma"
