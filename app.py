@@ -163,10 +163,16 @@ with abas[2]:
 
 with abas[3]:
     st.header("🎟️ Gere seu cupom exclusivo")
+    import re
     email = st.text_input("Digite seu e-mail para gerar o cupom:")
+    
     if email:
-        import hashlib
-        hash_value = hashlib.new('whirlpool')
-        hash_value.update(email.encode())
-        coupon_code = hash_value.hexdigest()[:8].upper()
-        st.success(f"Seu cupom exclusivo: **{coupon_code}**")
+        if re.match(r"[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+", email):
+            import hashlib
+            hash_value = hashlib.new('whirlpool')
+            hash_value.update(email.encode())
+            coupon_code = hash_value.hexdigest()[:8].upper()
+            st.success(f"Seu cupom exclusivo: **{coupon_code}**")
+        else:
+            st.error("Por favor, insira um e-mail válido.")
+
