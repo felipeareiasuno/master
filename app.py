@@ -129,7 +129,7 @@ with abas[2]:
     if "saldo_a_pagar" not in st.session_state:
         st.session_state.saldo_a_pagar = 0.0
 
-    if recompensas:
+    if len(recompensas) > 0:
         st.markdown(f"**Você escolheu:** {', '.join(recompensas)}")
         st.markdown(f"**Pontos usados:** {pontos_usados}")
         st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
