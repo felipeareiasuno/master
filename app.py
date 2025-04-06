@@ -14,16 +14,16 @@ st.markdown("""
         top: 0;
         background-color: white;
         z-index: 100;
+        border-bottom: 1px solid #eee;
     }
-    .stTabs [data-baseweb="tab-list"] {
+    section.main > div:first-child {  /* trava as abas também */
         position: sticky;
         top: 3.5rem;
         background-color: white;
         z-index: 99;
-        padding-top: 1rem;
-        border-bottom: 1px solid #ccc;
+        padding-top: 0.5rem;
     }
-    </style>
+</style>
 """, unsafe_allow_html=True)
 
 # Preço real das assinaturas
