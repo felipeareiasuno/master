@@ -3,11 +3,11 @@ import streamlit as st
 # App config - DEVE vir primeiro
 st.set_page_config(page_title="Simulador Indicação Suno", layout="centered")
 
-# CSS para travar o menu
+# CSS para travar o menu e adicionar espaçamento no topo
 st.markdown("""
     <style>
     .block-container {
-        padding-top: 0rem;
+        padding-top: 2rem;
     }
     .stTabs [data-baseweb="tab-list"] {
         position: sticky;
@@ -83,21 +83,6 @@ with abas[0]:
     """)
 
     st.markdown("---")
-    st.markdown("### 💬 Depoimentos de Clientes")
-    st.markdown("""
-    > "Já troquei meus pontos por dois cursos e economizei uma boa grana! Recomendo demais."  
-    — Fernanda R.
-
-    > "Indiquei três amigos e consegui desconto na minha renovação. Programa simples e vantajoso."  
-    — Lucas M.
-
-    > "O catálogo de recompensas é excelente. Muito bom poder escolher como usar os pontos!"  
-    — Carla T.
-    """)
-
-    st.image("https://cdn.pixabay.com/photo/2015/01/08/18/27/startup-593341_960_720.jpg", caption="Ganhe recompensas indicando amigos.", use_column_width=True)
-
-    st.markdown("---")
     st.markdown("### ❓ Regras Gerais (FAQ)")
     with st.expander("Quem pode participar do programa?"):
         st.markdown("Qualquer cliente Suno com uma assinatura ativa pode participar indicando novos assinantes.")
@@ -119,3 +104,55 @@ with abas[0]:
 
     with st.expander("Existe limite de indicações?"):
         st.markdown("Não! Você pode indicar quantas pessoas quiser — quanto mais indicações, mais pontos e recompensas. 😊")
+
+with abas[1]:
+    st.header("🎯 Simulador de pontos por indicação")
+
+    total_pontos = 0
+    for plano in valores_reais:
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(f"**{plano}**")
+        with col2:
+            qtd = st.number_input("", min_value=0, step=1, key=plano, label_visibility="collapsed")
+        valor_pago = valores_reais[plano]
+        pontos = (valor_pago * 0.10) / 5.94 * qtd
+        total_pontos += pontos
+
+    st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} pts**")
+    st.caption("Cada ponto pode ser trocado por recompensas no catálogo.")
+
+with abas[2]:
+    st.header("🎁 Simulador de trocas por pontos")
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        pontos = st.number_input("Quantos pontos você tem?", min_value=0, step=1)
+    with col2:
+        plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados)
+
+    nivel_atual = planos_ordenados.index(plano_atual)
+
+    st.subheader("🔄 Trocas disponíveis")
+
+    st.markdown("**Assinaturas** (com desconto proporcional):")
+    for item in assinaturas:
+        if planos_ordenados.index(item["name"]) >= nivel_atual:
+            desconto = min(100, int((pontos / item["points"]) * 100))
+            if desconto > 0:
+                valor_final = valores_reais[item['name']] * (1 - desconto / 100)
+                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:,.2f}".replace('.', ','), unsafe_allow_html=True)
+
+    if pontos > 0:
+        st.markdown("**Cursos**:")
+        for c in cursos:
+            desconto = min(100, int((pontos / c["points"]) * 100))
+            saldo = c["valor"] * (1 - (desconto / 100))
+            st.markdown(f"- {c['name']} ({c['points']} pts) → {desconto}% de desconto → Saldo a pagar: R$ {saldo:,.2f}".replace('.', ','), unsafe_allow_html=True)
+
+    st.markdown("**Brindes**:")
+    brindes_disp = [b for b in brindes if pontos >= b["points"]]
+    if brindes_disp:
+        for b in brindes_disp:
+            st.markdown(f"- {b['name']} ({b['points']} pts)", unsafe_allow_html=True)
+    else:
+        st.markdown("_Nenhum brinde disponível._")
