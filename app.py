@@ -167,21 +167,23 @@ with abas[2]:
     st.subheader("🔄 Escolha o que deseja trocar")
 
     st.markdown("### Assinaturas")
-    opcoes_assinatura = ["Nenhuma"]
+    opcoes_assinatura = []
     mapa_assinatura = {}
-    for item in assinaturas:
-        if planos_ordenados.index(item["name"]) >= nivel_atual:
-            max_desconto = min(100, int((pontos / item["points"]) * 100))
-            desconto_aplicado = (max_desconto // 10) * 10
-            if desconto_aplicado >= 10:
-                valor_total = valores_reais[item["name"]]
-                valor_final = valor_total * (1 - desconto_aplicado / 100)
-                pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
-                label = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
-                opcoes_assinatura.append(label)
-                mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
+    if pontos > 0:
+        opcoes_assinatura.append("Nenhuma")
+        for item in assinaturas:
+            if planos_ordenados.index(item["name"]) >= nivel_atual:
+                max_desconto = min(100, int((pontos / item["points"]) * 100))
+                desconto_aplicado = (max_desconto // 10) * 10
+                if desconto_aplicado >= 10:
+                    valor_total = valores_reais[item["name"]]
+                    valor_final = valor_total * (1 - desconto_aplicado / 100)
+                    pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
+                    label = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
+                    opcoes_assinatura.append(label)
+                    mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
 
-    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0)
+    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma""Escolha uma assinatura:", opcoes_assinatura, index=0)
     if escolha != "Nenhuma":
         recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
         if pontos_usados + pontos_assinatura <= pontos:
