@@ -1,17 +1,27 @@
-
 import streamlit as st
 
-# Dados dos produtos
-assinaturas = [
-    {"name": "Start", "points": 2},
-    {"name": "FIIs", "points": 8},
-    {"name": "Ações", "points": 8},
-    {"name": "Renda Variável", "points": 14},
-    {"name": "Premium", "points": 16},
-    {"name": "Inter", "points": 42},
-    {"name": "Small Caps", "points": 42},
-    {"name": "Suno Black", "points": 93},
-]
+# Preço real das assinaturas
+valores_reais = {
+    "Start": 59.40,
+    "FIIs": 251.16,
+    "Ações": 251.16,
+    "Renda Variável": 419.16,
+    "Premium": 461.16,
+    "Inter": 1236.20,
+    "Small Caps": 1236.20,
+    "Suno Black": 2774.40,
+}
+
+assinaturas = [{"name": nome, "points": pts} for nome, pts in {
+    "Start": 2,
+    "FIIs": 8,
+    "Ações": 8,
+    "Renda Variável": 14,
+    "Premium": 16,
+    "Inter": 42,
+    "Small Caps": 42,
+    "Suno Black": 93,
+}.items()]
 
 cursos = [
     {"name": "Valuation e Precificação", "points": 47},
@@ -30,8 +40,10 @@ brindes = [
     {"name": "Agasalho", "points": 39},
 ]
 
-planos_ordenados = [p["name"] for p in assinaturas]
+planos_ordenados = list(valores_reais.keys())
 
+# App
+st.set_page_config(page_title="Simulador Indicação Suno", layout="centered")
 st.title("📊 Simulador de Indicação Premiada - Suno")
 
 aba = st.sidebar.radio("Escolha o simulador:", ["1. Quantos pontos vou ganhar", "2. O que posso trocar com meus pontos"])
@@ -39,12 +51,15 @@ aba = st.sidebar.radio("Escolha o simulador:", ["1. Quantos pontos vou ganhar", 
 if aba == "1. Quantos pontos vou ganhar":
     st.header("🎯 Simulador de pontos por indicação")
     total_pontos = 0
-    for plano in assinaturas:
-        qtd = st.number_input(f"Quantas indicações do plano {plano['name']}?", min_value=0, step=1, key=plano['name'])
-        pontos = (plano['points'] * 5.94) * 0.1  # Convertendo para reais e pegando 10%
-        total_pontos += (pontos / 5.94) * qtd
+
+    for plano in valores_reais:
+        qtd = st.number_input(f"{plano} - quantas indicações?", min_value=0, step=1, key=plano)
+        valor_pago = valores_reais[plano]
+        pontos = (valor_pago * 0.10) / 5.94 * qtd  # 10% em reais → convertido em pontos
+        total_pontos += pontos
+
     st.success(f"✨ Total estimado de pontos: {round(total_pontos)} pts")
-    st.caption("*Os pontos podem ser trocados por produtos de acordo com o catálogo e regras do programa.")
+    st.caption("Cada ponto pode ser trocado por recompensas no catálogo.")
 
 else:
     st.header("🎁 Simulador de trocas por pontos")
@@ -57,7 +72,7 @@ else:
     st.markdown("**Assinaturas** (com desconto proporcional):")
     for item in assinaturas:
         if planos_ordenados.index(item["name"]) >= nivel_atual:
-            desconto = min(100, int((pontos / item["points"])*100))
+            desconto = min(100, int((pontos / item["points"]) * 100))
             if desconto > 0:
                 st.markdown(f"- {item['name']} ({item['points']} pts) → **{desconto}% de desconto**")
 
