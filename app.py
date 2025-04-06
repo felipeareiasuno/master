@@ -50,12 +50,22 @@ aba = st.sidebar.radio("Escolha o simulador:", ["1. Quantos pontos vou ganhar", 
 
 if aba == "1. Quantos pontos vou ganhar":
     st.header("🎯 Simulador de pontos por indicação")
-    total_pontos = 0
 
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown("**Assinatura**")
+    with col2:
+        st.markdown("**Qtd.**")
+
+    total_pontos = 0
     for plano in valores_reais:
-        qtd = st.number_input(f"{plano} - quantas indicações?", min_value=0, step=1, key=plano)
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(plano)
+        with col2:
+            qtd = st.number_input("", min_value=0, step=1, key=plano)
         valor_pago = valores_reais[plano]
-        pontos = (valor_pago * 0.10) / 5.94 * qtd  # 10% em reais → convertido em pontos
+        pontos = (valor_pago * 0.10) / 5.94 * qtd
         total_pontos += pontos
 
     st.success(f"✨ Total estimado de pontos: {round(total_pontos)} pts")
