@@ -87,11 +87,12 @@ else:
                 valor_final = valores_reais[item['name']] * (1 - desconto / 100)
                 st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:,.2f}".replace('.', ','), unsafe_allow_html=True)
 
-    st.markdown("**Cursos**:")
-    for c in cursos:
-        desconto = min(100, int((pontos / c["points"]) * 100))
-        saldo = c["valor"] * (1 - (desconto / 100))
-        st.markdown(f"- {c['name']} ({c['points']} pts) → {desconto}% de desconto → Saldo a pagar: R$ {saldo:,.2f}".replace('.', ','), unsafe_allow_html=True)
+    if pontos > 0:
+        st.markdown("**Cursos**:")
+        for c in cursos:
+            desconto = min(100, int((pontos / c["points"]) * 100))
+            saldo = c["valor"] * (1 - (desconto / 100))
+            st.markdown(f"- {c['name']} ({c['points']} pts) → {desconto}% de desconto → Saldo a pagar: R$ {saldo:,.2f}".replace('.', ','), unsafe_allow_html=True)
 
     st.markdown("**Brindes**:")
     brindes_disp = [b for b in brindes if pontos >= b["points"]]
