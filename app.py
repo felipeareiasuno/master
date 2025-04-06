@@ -3,34 +3,6 @@ import streamlit as st
 # App config - DEVE vir primeiro
 st.set_page_config(page_title="Simulador Indicação Suno", layout="centered")
 
-# CSS para travar o menu e adicionar espaçamento no topo
-st.markdown("""
-    <style>
-.block-container {
-    padding-top: 2rem;
-}
-header[data-testid="stHeader"] {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 999;
-    border-bottom: 1px solid #eee;
-}
-section[data-testid="stSidebar"] {
-    z-index: 1000;
-}
-section.main > div:first-child {
-    position: sticky;
-    top: 3.5rem;
-    background-color: white;
-    z-index: 998;
-    padding-top: 0.5rem;
-    border-bottom: 1px solid #eee;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: box-shadow 0.3s ease-in-out;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # Preço real das assinaturas
 valores_reais = {
@@ -75,7 +47,7 @@ brindes = [
 valores_reais = dict(("Internacional" if k == "Inter" else k, v) for k, v in valores_reais.items())
 planos_ordenados = list(valores_reais.keys())
 
-st.title("📊 Indicação Premiada Suno")
+st.title("☀️ Indicação Premiada Suno")
 
 abas = st.tabs([
     "📘 Sobre",
