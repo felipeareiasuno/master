@@ -79,10 +79,10 @@ st.title("📊 Simulador de Indicação Premiada - Suno")
 
 abas = st.tabs([
     "Sobre",
-    "Pontos",
-    "Trocas",
-    "Cupom",
-    "Objetivo"
+    "Acumule",
+    "Ganhe",
+    "Objetivo",
+    "Cupom"
 ])
 
 with abas[0]:
