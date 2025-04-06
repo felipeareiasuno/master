@@ -24,13 +24,13 @@ assinaturas = [{"name": nome, "points": pts} for nome, pts in {
 }.items()]
 
 cursos = [
-    {"name": "Valuation e Precificação", "points": 47},
-    {"name": "Viva de Dividendos", "points": 14},
-    {"name": "FIIs", "points": 18},
-    {"name": "Contabilidade", "points": 16},
-    {"name": "Matemática Financeira", "points": 16},
-    {"name": "Economia", "points": 23},
-    {"name": "Renda Fixa", "points": 16},
+    {"name": "Valuation e Precificação", "points": 47, "valor": 470.00},
+    {"name": "Viva de Dividendos", "points": 14, "valor": 140.00},
+    {"name": "FIIs", "points": 18, "valor": 180.00},
+    {"name": "Contabilidade", "points": 16, "valor": 160.00},
+    {"name": "Matemática Financeira", "points": 16, "valor": 160.00},
+    {"name": "Economia", "points": 23, "valor": 230.00},
+    {"name": "Renda Fixa", "points": 16, "valor": 160.00},
 ]
 
 brindes = [
@@ -85,20 +85,21 @@ else:
             desconto = min(100, int((pontos / item["points"]) * 100))
             if desconto > 0:
                 valor_final = valores_reais[item['name']] * (1 - desconto / 100)
-                st.write(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:.2f}")
+                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:.2f}", unsafe_allow_html=True)
 
     st.markdown("**Cursos**:")
     cursos_disp = [c for c in cursos if pontos >= c["points"]]
     if cursos_disp:
         for c in cursos_disp:
-            st.write(f"- {c['name']} ({c['points']} pts)")
+            saldo = c["valor"] * (1 - (pontos / c["points"])) if pontos < c["points"] else 0
+            st.markdown(f"- {c['name']} ({c['points']} pts) → Saldo a pagar: R$ {saldo:.2f}", unsafe_allow_html=True)
     else:
-        st.write("_Nenhum curso disponível._")
+        st.markdown("_Nenhum curso disponível._")
 
     st.markdown("**Brindes**:")
     brindes_disp = [b for b in brindes if pontos >= b["points"]]
     if brindes_disp:
         for b in brindes_disp:
-            st.write(f"- {b['name']} ({b['points']} pts)")
+            st.markdown(f"- {b['name']} ({b['points']} pts)", unsafe_allow_html=True)
     else:
-        st.write("_Nenhum brinde disponível._")
+        st.markdown("_Nenhum brinde disponível._")
