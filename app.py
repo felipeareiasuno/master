@@ -162,7 +162,7 @@ with abas[2]:
                     opcoes_assinatura.append(label)
                     mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
 
-    escolha = st.radio("Escolha uma assinatura:", ["Nenhuma"] + opcoes_assinatura, index=0, key="assinatura_radio")
+    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura + ["Nenhuma"], index=len(opcoes_assinatura), key="assinatura_radio")
     if escolha != "Nenhuma" and escolha in mapa_assinatura:
         nome_assinatura, pontos_assinatura, valor_assinatura = mapa_assinatura[escolha]
         if pontos_assinatura <= pontos:
