@@ -121,17 +121,27 @@ with abas[2]:
 
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
-    if 'recompensas' in locals():
-        if recompensas:
-            st.markdown(f"**Você escolheu:** {', '.join(recompensas)}")
-        else:
-            st.markdown("_Nenhuma recompensa selecionada ainda._")
-        st.markdown(f"**Pontos usados:** {pontos_usados}")
-        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
-        if saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
-    else:
+    import time
+    time.sleep(0.5)
+
+    assinaturas_escolhidas = [nome_assinatura] if nome_assinatura else []
+    cursos_escolhidos = [c['name'] for c in cursos if st.session_state.get(f"curso_{c['name']}", False)]
+    brindes_escolhidos = [b['name'] for b in brindes if st.session_state.get(f"brinde_{b['name']}", False)]
+
+    if not (assinaturas_escolhidas or cursos_escolhidos or brindes_escolhidos):
         st.markdown("_Nenhuma recompensa selecionada ainda._")
+    else:
+        if assinaturas_escolhidas:
+            st.markdown(f"**Assinatura:** {', '.join(assinaturas_escolhidas)}")
+        if cursos_escolhidos:
+            st.markdown(f"**Cursos:** {', '.join(cursos_escolhidos)}")
+        if brindes_escolhidos:
+            st.markdown(f"**Brindes:** {', '.join(brindes_escolhidos)}")
+
+    st.markdown(f"**Pontos usados:** {pontos_usados}")
+    st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
+    if saldo_a_pagar > 0:
+        st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
 
