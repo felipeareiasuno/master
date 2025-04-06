@@ -113,78 +113,43 @@ with abas[2]:
     st.header("🎁 Simulador de trocas por pontos")
     col1, col2 = st.columns([1, 1])
     with col1:
-        pontos = st.number_input("Quantos pontos você tem?", min_value=0, step=1)
+        pontos = st.number_input("Quantos pontos você tem?", min_value=0, step=1, key="pts_ganhe")
     with col2:
-        plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados)
+        plano_atual = st.selectbox("Qual plano você possui atualmente?", planos_ordenados, key="plano_ganhe")
 
     nivel_atual = planos_ordenados.index(plano_atual)
 
-    recompensa_assinatura = None
-    recompensas_extra = []
-    pontos_usados = 0
-    saldo_a_pagar = 0.0
+    st.markdown("---")
+    st.subheader("🎉 Resumo da sua escolha")
 
-    recompensas_selecionadas = []
-    pontos_usados = 0
-    saldo_a_pagar = 0.0
+    if "recompensas_totais" not in st.session_state:
+        st.session_state.recompensas_totais = []
+    if "pontos_usados" not in st.session_state:
+        st.session_state.pontos_usados = 0
+    if "saldo_a_pagar" not in st.session_state:
+        st.session_state.saldo_a_pagar = 0.0
 
-    recompensas_totais = []
-    pontos_usados = 0
-    saldo_a_pagar = 0.0
-
-    if escolha != "Nenhuma" and escolha in mapa_assinatura:
-        recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
-        if pontos_assinatura <= pontos:
-            recompensas_totais.append(recompensa_assinatura)
-            pontos_usados += pontos_assinatura
-            saldo_a_pagar += valor_final
-
-    for c in cursos:
-        if pontos - pontos_usados >= c["points"] and st.session_state.get(c['name']):
-            recompensas_totais.append(c['name'])
-            pontos_usados += c['points']
-
-    for b in brindes:
-        if pontos - pontos_usados >= b["points"] and st.session_state.get(b['name']):
-            recompensas_totais.append(b['name'])
-            pontos_usados += b['points']
-
-    if recompensas_totais:
-        st.markdown(f"**Você escolheu:** {', '.join(recompensas_totais)}")
-        st.markdown(f"**Pontos usados:** {pontos_usados}")
-        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
-        if saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
+    if st.session_state.recompensas_totais:
+        st.markdown(f"**Você escolheu:** {', '.join(st.session_state.recompensas_totais)}")
+        st.markdown(f"**Pontos usados:** {st.session_state.pontos_usados}")
+        st.markdown(f"**Pontos restantes:** {pontos - st.session_state.pontos_usados}")
+        if st.session_state.saldo_a_pagar > 0:
+            st.markdown(f"**Saldo a pagar:** R$ {st.session_state.saldo_a_pagar:,.2f}".replace('.', ','))
     else:
         st.markdown("_Nenhuma recompensa selecionada ainda._")
+
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
 
-    st.markdown("### Cursos")
-    for c in cursos:
-        if pontos - pontos_usados >= c["points"]:
-            if st.checkbox(f"{c['name']} ({c['points']} pts)", key=c['name']):
-                recompensas_extra.append(c['name'])
-                pontos_usados += c['points']
-        else:
-            faltam = c["points"] - (pontos - pontos_usados)
-            st.markdown(f"{c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+    recompensas = []
+    pontos_usados = 0
+    saldo_a_pagar = 0.0
 
-    st.markdown("### Brindes")
-    for b in brindes:
-        if pontos - pontos_usados >= b["points"]:
-            if st.checkbox(f"{b['name']} ({b['points']} pts)", key=b['name']):
-                recompensas_extra.append(b['name'])
-                pontos_usados += b['points']
-        else:
-            faltam = b["points"] - (pontos - pontos_usados)
-            st.markdown(f"{b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
-
+    # Assinaturas
     st.markdown("### Assinaturas")
     opcoes_assinatura = []
     mapa_assinatura = {}
     if pontos > 0:
-        opcoes_assinatura.append("Nenhuma")
         for item in assinaturas:
             if planos_ordenados.index(item["name"]) >= nivel_atual:
                 max_desconto = min(100, int((pontos / item["points"]) * 100))
@@ -197,7 +162,40 @@ with abas[2]:
                     opcoes_assinatura.append(label)
                     mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
 
-    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma"
+    escolha = st.radio("Escolha uma assinatura:", ["Nenhuma"] + opcoes_assinatura, index=0, key="assinatura_radio")
+    if escolha != "Nenhuma" and escolha in mapa_assinatura:
+        nome_assinatura, pontos_assinatura, valor_assinatura = mapa_assinatura[escolha]
+        if pontos_assinatura <= pontos:
+            recompensas.append(nome_assinatura)
+            pontos_usados += pontos_assinatura
+            saldo_a_pagar += valor_assinatura
+
+    # Cursos
+    st.markdown("### Cursos")
+    for c in cursos:
+        if pontos - pontos_usados >= c["points"]:
+            if st.checkbox(f"{c['name']} ({c['points']} pts)", key=f"curso_{c['name']}"):
+                recompensas.append(c['name'])
+                pontos_usados += c['points']
+        else:
+            faltam = c["points"] - (pontos - pontos_usados)
+            st.markdown(f"{c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+
+    # Brindes
+    st.markdown("### Brindes")
+    for b in brindes:
+        if pontos - pontos_usados >= b["points"]:
+            if st.checkbox(f"{b['name']} ({b['points']} pts)", key=f"brinde_{b['name']}"):
+                recompensas.append(b['name'])
+                pontos_usados += b['points']
+        else:
+            faltam = b["points"] - (pontos - pontos_usados)
+            st.markdown(f"{b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
+
+    # Atualizar sessão
+    st.session_state.recompensas_totais = recompensas
+    st.session_state.pontos_usados = pontos_usados
+    st.session_state.saldo_a_pagar = saldo_a_pagar
 
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
