@@ -121,14 +121,11 @@ with abas[2]:
 
     st.markdown("---")
     st.subheader("🎉 Resumo da sua escolha")
-    if 'recompensas' in locals() and recompensas:
-        st.markdown(f"**Você escolheu:** {', '.join(recompensas)}")
-        st.markdown(f"**Pontos usados:** {pontos_usados}")
-        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
-        if saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
-    else:
-        st.markdown("_Nenhuma recompensa selecionada ainda._")
+    st.markdown(f"**Você escolheu:** {', '.join(recompensas) if recompensas else '_Nenhuma recompensa selecionada ainda._'}")
+    st.markdown(f"**Pontos usados:** {pontos_usados}")
+    st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
+    if saldo_a_pagar > 0:
+        st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
     st.markdown("---")
     st.subheader("🔄 Escolha o que deseja trocar")
 
