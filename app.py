@@ -183,34 +183,16 @@ with abas[2]:
                     opcoes_assinatura.append(label)
                     mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
 
-    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma""Escolha uma assinatura:", opcoes_assinatura, index=0)
-    if escolha != "Nenhuma":
-        recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
-        if pontos_usados + pontos_assinatura <= pontos:
-            pontos_usados += pontos_assinatura
-            saldo_a_pagar += valor_final
+    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0) if opcoes_assinatura else "Nenhuma"
 
-    st.markdown("### Cursos")
-    for c in cursos:
-        if pontos - pontos_usados >= c["points"]:
-            if st.checkbox(f"{c['name']} ({c['points']} pts)", key=c['name']):
-                recompensas_extra.append(c['name'])
-                pontos_usados += c['points']
-    st.markdown("### Brindes")
-    for b in brindes:
-        if pontos - pontos_usados >= b["points"]:
-            if st.checkbox(f"{b['name']} ({b['points']} pts)", key=b['name']):
-                recompensas_extra.append(b['name'])
-                pontos_usados += b['points']
-    
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
 
     tipo_recompensa = st.selectbox("Qual tipo de recompensa você quer?", ["Assinatura", "Curso", "Brinde"])
 
     if tipo_recompensa == "Assinatura":
-        plano_atual = st.selectbox("Qual assinatura você possui?", planos_ordenados)
-        opcoes = [a for a in assinaturas if planos_ordenados.index(a["name"]) >= planos_ordenados.index(plano_atual)]
+        plano_atual_obj = st.selectbox("Qual assinatura você possui?", planos_ordenados, key="plano_obj")
+        opcoes = [a for a in assinaturas if planos_ordenados.index(a["name"]) >= planos_ordenados.index(plano_atual_obj)]
         desejada = st.selectbox("Qual assinatura você quer conquistar?", [a["name"] for a in opcoes])
         pontos_necessarios = next(a["points"] for a in opcoes if a["name"] == desejada)
 
