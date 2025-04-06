@@ -81,7 +81,7 @@ abas = st.tabs([
     "Pontos",
     "Trocas",
     "Cupom",
-    "Simulação"
+    "Objetivo"
 ])
 
 with abas[0]:
