@@ -128,7 +128,7 @@ with abas[2]:
     pontos_usados = 0
     saldo_a_pagar = 0.0
 
-        recompensas_totais = []
+    recompensas_totais = []
     pontos_usados = 0
     saldo_a_pagar = 0.0
 
