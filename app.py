@@ -76,6 +76,24 @@ abas = st.tabs([
     "🎁 O que posso trocar com meus pontos"
 , "🎟️ Gerar meu cupom"])
 
+with abas[0]:
+    st.header("📘 Sobre o Programa")
+    st.markdown("""
+    Participe do Programa de Indicação Suno e ganhe pontos a cada amigo que se tornar assinante.
+
+    ### Como funciona:
+    - Compartilhe seu link de indicação
+    - Seus amigos assinam um plano da Suno
+    - Você acumula pontos que podem ser trocados por recompensas
+
+    ### O que você pode trocar:
+    - Assinaturas Suno com desconto
+    - Cursos exclusivos
+    - Brindes como camisetas, livros e canecas
+
+    Quanto mais amigos você indicar, mais pontos você acumula!
+    """)
+
 with abas[1]:
     st.header("🎯 Simulador de pontos por indicação")
     total_pontos = 0
