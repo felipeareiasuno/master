@@ -92,6 +92,9 @@ with abas[0]:
     with st.expander("Existe limite de indicações?"):
         st.markdown("Não! Você pode indicar quantas pessoas quiser — quanto mais indicações, mais pontos e recompensas. 😊")
 
+    with st.expander("Como gero meu cupom de desconto?"):
+        st.markdown("Acesse a aba '🎟️ Cupom', insira seu e-mail e receba um código exclusivo para usar em sua próxima assinatura.")
+
 with abas[1]:
     st.header("🎯 Simulador de pontos por indicação")
     total_pontos = 0
