@@ -88,13 +88,10 @@ else:
                 st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto}% de desconto → R$ {valor_final:,.2f}".replace('.', ','), unsafe_allow_html=True)
 
     st.markdown("**Cursos**:")
-    cursos_disp = [c for c in cursos if pontos >= c["points"]]
-    if cursos_disp:
-        for c in cursos_disp:
-            saldo = c["valor"] * (1 - (pontos / c["points"])) if pontos < c["points"] else 0
-            st.markdown(f"- {c['name']} ({c['points']} pts) → Saldo a pagar: R$ {saldo:,.2f}".replace('.', ','), unsafe_allow_html=True)
-    else:
-        st.markdown("_Nenhum curso disponível._")
+    for c in cursos:
+        desconto = min(100, int((pontos / c["points"]) * 100))
+        saldo = c["valor"] * (1 - (desconto / 100))
+        st.markdown(f"- {c['name']} ({c['points']} pts) → {desconto}% de desconto → Saldo a pagar: R$ {saldo:,.2f}".replace('.', ','), unsafe_allow_html=True)
 
     st.markdown("**Brindes**:")
     brindes_disp = [b for b in brindes if pontos >= b["points"]]
