@@ -78,11 +78,11 @@ planos_ordenados = list(valores_reais.keys())
 st.title("📊 Simulador de Indicação Premiada - Suno")
 
 abas = st.tabs([
-    "Sobre",
-    "Acumule",
-    "Ganhe",
-    "Objetivo",
-    "Cupom"
+    "📘 Sobre",
+    "📈 Acumule",
+    "🎁 Ganhe",
+    "🎯 Objetivo",
+    "🎟️ Cupom"
 ])
 
 with abas[0]:
