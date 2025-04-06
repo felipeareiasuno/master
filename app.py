@@ -54,19 +54,35 @@ abas = st.tabs([
 
 with abas[0]:
     st.header("📘 Sobre o Programa de Indicação")
+    st.success("Indique amigos e acumule pontos para trocar por recompensas exclusivas!")
+    st.markdown("---")
+
+    st.markdown("### Como funciona")
     st.markdown("""
-    Participe do programa de indicação da Suno e acumule pontos para trocar por assinaturas, cursos e brindes!
-
-    ### Como funciona:
-    - A cada amigo indicado que assinar um plano Suno, você ganha pontos.
-    - Os pontos são proporcionais ao valor da assinatura adquirida pelo indicado.
-    - Com os pontos acumulados, você pode trocá-los por recompensas no catálogo.
-
-    ### Regras básicas:
-    - Você ganha **10% do valor pago** em pontos (1 ponto = R$ 5,94).
-    - Os pontos podem ser utilizados parcialmente, como **desconto** nas assinaturas e cursos.
-    - Algumas trocas exigem número mínimo de pontos.
+    - Ao indicar amigos para a Suno, você acumula pontos a cada assinatura confirmada.
+    - Esses pontos podem ser trocados por cursos, assinaturas e brindes.
+    - Quanto mais indicações, mais recompensas disponíveis para você.
     """)
+
+    st.markdown("---")
+    st.markdown("### ❓ Regras Gerais (FAQ)")
+    with st.expander("Quem pode participar do programa?"):
+        st.markdown("Qualquer cliente Suno com uma assinatura ativa pode participar indicando novos assinantes.")
+
+    with st.expander("Como os pontos são gerados?"):
+        st.markdown("Sempre que um amigo indicado assinar um plano Suno, você ganha pontos automaticamente.")
+
+    with st.expander("Como posso usar os pontos acumulados?"):
+        st.markdown("Você pode trocar seus pontos por assinaturas, cursos ou brindes no nosso catálogo.")
+
+    with st.expander("Posso trocar pontos parcialmente?"):
+        st.markdown("Sim! Você pode usar os pontos como desconto proporcional nas recompensas.")
+
+    with st.expander("Os pontos expiram?"):
+        st.markdown("Sim, os pontos possuem validade de 12 meses após a data da indicação confirmada.")
+
+    with st.expander("Onde acompanho meus pontos?"):
+        st.markdown("Dentro da sua conta Suno, na área do programa de indicações.")
 
 with abas[1]:
     st.header("🎯 Simulador de pontos por indicação")
