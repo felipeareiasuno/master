@@ -143,9 +143,15 @@ with abas[2]:
             max_desconto = min(100, int((pontos / item["points"]) * 100))
             desconto_aplicado = (max_desconto // 10) * 10
             if desconto_aplicado >= 10:
-                valor_final = valores_reais[item['name']] * (1 - desconto_aplicado / 100)
-                st.markdown(f"- {item['name']} ({item['points']} pts) → {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ','))
-
+                valor_total = valores_reais[item['name']]
+                valor_desconto = valor_total * (desconto_aplicado / 100)
+                valor_final = valor_total - valor_desconto
+                pontos_usados = item["points"] * (desconto_aplicado / 100)
+                pontos_sobrando = pontos - int(pontos_usados)
+                st.markdown(f"- **{item['name']}** ({item['points']} pts)")
+                st.markdown(f"  • Desconto aplicado: {desconto_aplicado}%")
+                st.markdown(f"  • Você pagará: R$ {valor_final:,.2f}".replace('.', ','))
+                st.markdown(f"  • Pontos usados: {int(pontos_usados)} pts | Pontos restantes: {pontos_sobrando} pts")
     st.markdown("**Cursos**:")
     for c in cursos:
         if pontos >= c["points"]:
