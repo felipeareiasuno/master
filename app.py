@@ -74,7 +74,7 @@ abas = st.tabs([
     "📘 Sobre o Programa",
     "🎯 Quantos pontos vou ganhar",
     "🎁 O que posso trocar com meus pontos"
-])
+, "🎟️ Gerar meu cupom"])
 
 with abas[1]:
     st.header("🎯 Simulador de pontos por indicação")
@@ -125,3 +125,13 @@ with abas[2]:
         else:
             faltam = b["points"] - pontos
             st.markdown(f"- {b['name']} (precisa de {b['points']} pts) → faltam {faltam} pts")
+
+with abas[3]:
+    st.header("🎟️ Gere seu cupom exclusivo")
+    email = st.text_input("Digite seu e-mail para gerar o cupom:")
+    if email:
+        import hashlib
+        hash_value = hashlib.new('whirlpool')
+        hash_value.update(email.encode())
+        coupon_code = hash_value.hexdigest()[:8].upper()
+        st.success(f"Seu cupom exclusivo: **{coupon_code}**")
