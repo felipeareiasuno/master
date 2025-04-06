@@ -129,12 +129,14 @@ with abas[2]:
     if "saldo_a_pagar" not in st.session_state:
         st.session_state.saldo_a_pagar = 0.0
 
-    if "recompensas_totais" in st.session_state and len(st.session_state.recompensas_totais) > 0:
-        st.markdown(f"**Você escolheu:** {', '.join(st.session_state.recompensas_totais)}")
-        st.markdown(f"**Pontos usados:** {st.session_state.pontos_usados}")
-        st.markdown(f"**Pontos restantes:** {pontos - st.session_state.pontos_usados}")
-        if st.session_state.saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:** R$ {st.session_state.saldo_a_pagar:,.2f}".replace('.', ','))
+    import time
+    time.sleep(1)
+    if recompensas:
+        st.markdown(f"**Você escolheu:** {', '.join(recompensas)}")
+        st.markdown(f"**Pontos usados:** {pontos_usados}")
+        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
+        if saldo_a_pagar > 0:
+            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
     else:
         st.markdown("_Nenhuma recompensa selecionada ainda._")
     st.markdown("---")
