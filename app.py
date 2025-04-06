@@ -132,7 +132,7 @@ with abas[1]:
         valor_pago = valores_reais[plano]
         pontos = round((valor_pago * 0.10) / 5.94) * qtd
         total_pontos += pontos
-    st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} pts**")
+    st.markdown(f"### ✨ Total estimado de pontos: **{round(total_pontos)} {'ponto' if round(total_pontos) == 1 else 'pontos'}**")
 
 with abas[2]:
     st.header("🎁 Simulador de trocas por pontos")
@@ -161,7 +161,7 @@ with abas[2]:
             st.markdown(f"- {c['name']} ({c['points']} pts)")
         else:
             faltam = c["points"] - pontos
-            st.markdown(f"- {c['name']} (precisa de {c['points']} pts) → faltam {faltam} pts")
+            st.markdown(f"- {c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
 
     st.markdown("**Brindes**:")
     for b in brindes:
@@ -169,7 +169,7 @@ with abas[2]:
             st.markdown(f"- {b['name']} ({b['points']} pts)")
         else:
             faltam = b["points"] - pontos
-            st.markdown(f"- {b['name']} (precisa de {b['points']} pts) → faltam {faltam} pts")
+            st.markdown(f"- {b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
 
 with abas[3]:
     st.header("🎟️ Gere seu cupom exclusivo")
@@ -208,4 +208,4 @@ with abas[4]:
         pontos_gerados = round((valores_reais[a["name"]] * 0.10) / 5.94)
         if pontos_gerados > 0:
             qtd = (pontos_necessarios + pontos_gerados - 1) // pontos_gerados
-            st.markdown(f"- {qtd} indicações do plano **{a['name']}** ({pontos_gerados} pts cada)")
+            st.markdown(f"- {qtd} {'indicação' if qtd == 1 else 'indicações'} do plano **{a['name']}** ({pontos_gerados} pts cada)")
