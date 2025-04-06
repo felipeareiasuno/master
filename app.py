@@ -134,7 +134,7 @@ with abas[2]:
     pontos_usados = 0
     saldo_a_pagar = 0.0
 
-    if escolha != "Nenhuma":
+    if 'escolha' in locals() and escolha != "Nenhuma":
         recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
         if pontos_assinatura <= pontos:
             recompensas_totais.append(recompensa_assinatura)
