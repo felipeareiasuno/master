@@ -156,32 +156,28 @@ with abas[2]:
                 pontos_necessarios = int(item["points"] * (desconto_aplicado / 100))
                 label = f"{item['name']} - {desconto_aplicado}% de desconto → R$ {valor_final:,.2f}".replace('.', ',')
                 opcoes_assinatura.append(label)
-                mapa_assinatura[label] = (item["name"], pontos_necessarios, st.markdown("### Cursos")
+                mapa_assinatura[label] = (item["name"], pontos_necessarios, valor_final)
+
+    escolha = st.radio("Escolha uma assinatura:", opcoes_assinatura, index=0)
+    if escolha != "Nenhuma":
+        recompensa_assinatura, pontos_assinatura, valor_final = mapa_assinatura[escolha]
+        if pontos_usados + pontos_assinatura <= pontos:
+            pontos_usados += pontos_assinatura
+            saldo_a_pagar += valor_final
+
+    st.markdown("### Cursos")
     for c in cursos:
         if pontos - pontos_usados >= c["points"]:
             if st.checkbox(f"{c['name']} ({c['points']} pts)", key=c['name']):
                 recompensas_extra.append(c['name'])
                 pontos_usados += c['points']
-    st.markdown("### Brindes")box(f"{c['name']} ({c['points']} pts)"):
-                recompensas_selecionadas.append(c['name'])
-                pontos_usados += c['points']
-        else:
-            faltam = c["points"] - pontos
-            st.markdown(f"{c['name']} (precisa de {c['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
-
     st.markdown("### Brindes")
     for b in brindes:
         if pontos - pontos_usados >= b["points"]:
             if st.checkbox(f"{b['name']} ({b['points']} pts)", key=b['name']):
                 recompensas_extra.append(b['name'])
                 pontos_usados += b['points']
-    st.markdown("---")
-        st.subheader("🎉 Resumo da troca")
-        st.markdown(f"**Você escolheu:** {', '.join(recompensas_selecionadas)}")
-        st.markdown(f"**Pontos usados:** {pontos_usados}")
-        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
-        if saldo_a_pagar > 0:
-            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
+    ** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
 
 with abas[3]:
     st.header("🎯 Quero conquistar uma recompensa")
