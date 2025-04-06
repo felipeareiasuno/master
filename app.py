@@ -50,7 +50,7 @@ assinaturas = [{"name": nome, "points": pts} for nome, pts in {
     "Ações": 8,
     "Renda Variável": 14,
     "Premium": 16,
-    "Inter": 42,
+    "Internacional": 42,
     "Small Caps": 42,
     "Suno Black": 93,
 }.items()]
