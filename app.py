@@ -1,5 +1,8 @@
 import streamlit as st
 
+# App config - DEVE vir primeiro
+st.set_page_config(page_title="Simulador Indicação Suno", layout="centered")
+
 # CSS para travar o menu
 st.markdown("""
     <style>
@@ -59,8 +62,6 @@ brindes = [
 
 planos_ordenados = list(valores_reais.keys())
 
-# App
-st.set_page_config(page_title="Simulador Indicação Suno", layout="centered")
 st.title("📊 Simulador de Indicação Premiada - Suno")
 
 abas = st.tabs([
