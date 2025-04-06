@@ -119,12 +119,23 @@ with abas[2]:
 
     nivel_atual = planos_ordenados.index(plano_atual)
 
-    st.markdown("---")
-    st.subheader("🔄 Escolha o que deseja trocar")
-
     recompensas_selecionadas = []
     pontos_usados = 0
     saldo_a_pagar = 0.0
+
+    st.markdown("---")
+    st.subheader("🎉 Resumo da sua escolha")
+    if recompensas_selecionadas:
+        st.markdown(f"**Você escolheu:** {', '.join(recompensas_selecionadas)}")
+        st.markdown(f"**Pontos usados:** {pontos_usados}")
+        st.markdown(f"**Pontos restantes:** {pontos - pontos_usados}")
+        if saldo_a_pagar > 0:
+            st.markdown(f"**Saldo a pagar:** R$ {saldo_a_pagar:,.2f}".replace('.', ','))
+    else:
+        st.markdown("_Nenhuma recompensa selecionada ainda._")
+
+    st.markdown("---")
+    st.subheader("🔄 Escolha o que deseja trocar")
 
     st.markdown("### Assinaturas")
     for item in assinaturas:
@@ -159,8 +170,6 @@ with abas[2]:
         else:
             faltam = b["points"] - pontos
             st.markdown(f"{b['name']} (precisa de {b['points']} pts) → falta {faltam} {'ponto' if faltam == 1 else 'pontos'}")
-
-    if recompensas_selecionadas:
         st.markdown("---")
         st.subheader("🎉 Resumo da troca")
         st.markdown(f"**Você escolheu:** {', '.join(recompensas_selecionadas)}")
